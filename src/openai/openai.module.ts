@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { OpenAIService } from './openai.service';
 import { ConfigModule } from '@nestjs/config';
-import { OpenAI } from 'openai'; // Import OpenAI SDK
+import { OpenAI } from 'openai';
 
 @Module({
-  imports: [ConfigModule], // Ensure ConfigModule is imported if using env variables
+  imports: [ConfigModule.forRoot()],
   providers: [
     {
       provide: 'OpenAI',
