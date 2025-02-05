@@ -12,8 +12,8 @@ import { MailService } from "./mail.service";
       key: process.env.MAILGUN_API_KEY || "",
     }),
   ],
-  controllers: [MailController], // ✅ Moved to controllers
-  providers: [MailService], // ✅ Corrected provider
-  exports: [MailService], // ✅ Exported correctly
+  controllers: [MailController],
+  providers: [MailService],
+  exports: [MailService],
 })
 export class MailModule {}
