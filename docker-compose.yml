@@ -1,0 +1,43 @@
+version: "3.8"
+
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - OPEN_AI_ASISSTANT_ID=${OPEN_AI_ASISSTANT_ID}
+      - OPEN_AI_SECRET_KEY=${OPEN_AI_SECRET_KEY}
+      - SOCKET_PORT=3002
+      - REDIS_URL=redis://localhost:6379
+      - MAX_MESSAGES_LIMIT=3
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_EXPIRE=1h
+      - DB_HOST=127.0.0.1
+      - DB_USER=postgres
+      - DB_PASSWORD=1234
+      - DB_NAME=openai
+      - ORIGIN=http://localhost:5173
+      - MAILGUN_API_KEY=${MAILGUN_API_KEY}
+      - MAILGUN_DOMAIN=notify.n5s.ai
+      - FROM_MAILGUN_EMAIL=adnanalvi68@gmail.com
+    depends_on:
+      - postgres
+    command: >
+      sh -c "wait-for-it.sh postgres:5432 -- 
+      knex migrate:latest && node dist/main"
+
+  postgres:
+    image: postgres:13-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: openai
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
